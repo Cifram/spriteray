@@ -15,6 +15,6 @@ pub fn torus(pos: Vec3, inner_radius: f32, outer_radius: f32, color: Color) -> S
   if range > 0.0 {
     SdfResult::Miss { range }
   } else {
-    SdfResult::Hit { range, normal: offset.normalize_or_zero(), color }    
+    SdfResult::Hit { range, color }
   }
 }

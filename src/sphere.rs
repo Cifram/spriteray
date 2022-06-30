@@ -7,6 +7,6 @@ pub fn sphere(pos: Vec3, radius: f32, color: Color) -> SdfResult {
   if range > 0.0 {
     SdfResult::Miss { range }
   } else {
-    SdfResult::Hit { range, normal: pos.normalize_or_zero(), color }    
+    SdfResult::Hit { range, color }
   }
 }
