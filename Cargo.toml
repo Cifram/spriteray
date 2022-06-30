@@ -14,3 +14,7 @@ required-features = ["image"]
 [[example]]
 name = "torus"
 required-features = ["image"]
+
+[[example]]
+name = "cone"
+required-features = ["image"]
