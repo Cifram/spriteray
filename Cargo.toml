@@ -10,3 +10,7 @@ image = { version = "0.24.2", optional = true }
 [[example]]
 name = "sphere"
 required-features = ["image"]
+
+[[example]]
+name = "torus"
+required-features = ["image"]
