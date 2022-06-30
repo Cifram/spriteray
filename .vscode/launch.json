@@ -1,0 +1,141 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in library 'spriteray'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--lib",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "spriteray",
+					"kind": "lib"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'sphere'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=sphere",
+					"--package=spriteray",
+					"--features=\"image\""
+				],
+				"filter": {
+					"name": "sphere",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'sphere'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=sphere",
+					"--package=spriteray",
+				],
+				"filter": {
+					"name": "sphere",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'torus'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=torus",
+					"--package=spriteray",
+					"--features=\"image\""
+				],
+				"filter": {
+					"name": "torus",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'torus'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=torus",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "torus",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'cone'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=cone",
+					"--package=spriteray",
+					"--features=image"
+				],
+				"filter": {
+					"name": "cone",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'cone'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=cone",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "cone",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		}
+	]
+}
