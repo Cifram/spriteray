@@ -9,5 +9,6 @@ fn main() {
 		Vec3::new(0.3, -1.0, 0.0).normalize()
 	);
 
-	image::save_buffer("sphere.png", &bytes, 32, 32, image::ColorType::Rgba8).unwrap();
+	std::fs::create_dir_all("example_images/").unwrap();
+	image::save_buffer("example_images/sphere.png", &bytes, 32, 32, image::ColorType::Rgba8).unwrap();
 }
