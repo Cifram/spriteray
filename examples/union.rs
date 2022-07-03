@@ -1,5 +1,5 @@
 use glam::{Vec2, Vec3};
-use spriteray::{Color, render, torus, sphere, union, SdfResult};
+use spriteray::{Color, sphere, render, union3, SdfResult};
 
 fn main() {
 	let bytes = render(
@@ -14,8 +14,9 @@ fn main() {
 }
 
 fn sdf(point: Vec3) -> SdfResult {
-	union(point,
-		|point| sphere(point + Vec3::X, 1.5, Color::new(1.0, 0.0, 0.0)),
-		|point| sphere(point - Vec3::X, 1.5, Color::new(0.0, 1.0, 0.0)),
+	union3(point,
+		&|point| sphere(point + Vec3::X, 1.5, Color::new(1.0, 0.0, 0.0)),
+		&|point| sphere(point - Vec3::X, 1.5, Color::new(0.0, 1.0, 0.0)),
+		&|point| sphere(point - Vec3::Y, 1.5, Color::new(0.0, 0.0, 1.0)),
 	)
 }
