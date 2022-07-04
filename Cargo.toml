@@ -20,6 +20,10 @@ name = "cone"
 required-features = ["image"]
 
 [[example]]
+name = "truncated_cone"
+required-features = ["image"]
+
+[[example]]
 name = "union"
 required-features = ["image"]
 
