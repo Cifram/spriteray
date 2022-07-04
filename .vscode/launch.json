@@ -32,7 +32,7 @@
 					"build",
 					"--example=sphere",
 					"--package=spriteray",
-					"--features=\"image\""
+					"--features=image"
 				],
 				"filter": {
 					"name": "sphere",
@@ -51,7 +51,7 @@
 					"test",
 					"--no-run",
 					"--example=sphere",
-					"--package=spriteray",
+					"--package=spriteray"
 				],
 				"filter": {
 					"name": "sphere",
@@ -70,7 +70,7 @@
 					"build",
 					"--example=torus",
 					"--package=spriteray",
-					"--features=\"image\""
+					"--features=image"
 				],
 				"filter": {
 					"name": "torus",
@@ -131,6 +131,158 @@
 				],
 				"filter": {
 					"name": "cone",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'capsule'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=capsule",
+					"--package=spriteray",
+					"--features=image"
+				],
+				"filter": {
+					"name": "capsule",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'capsule'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=capsule",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "capsule",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'truncated_cone'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=truncated_cone",
+					"--package=spriteray",
+					"--features=image"
+				],
+				"filter": {
+					"name": "truncated_cone",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'truncated_cone'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=truncated_cone",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "truncated_cone",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'union'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=union",
+					"--package=spriteray",
+					"--features=image"
+				],
+				"filter": {
+					"name": "union",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'union'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=union",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "union",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug example 'difference'",
+			"cargo": {
+				"args": [
+					"build",
+					"--example=difference",
+					"--package=spriteray",
+					"--features=image"
+				],
+				"filter": {
+					"name": "difference",
+					"kind": "example"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in example 'difference'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--example=difference",
+					"--package=spriteray"
+				],
+				"filter": {
+					"name": "difference",
 					"kind": "example"
 				}
 			},
