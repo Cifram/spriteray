@@ -45,48 +45,26 @@ fn raycast<F>(
 	let mut len = 0.0;
 	while len < ray_length {
 		let point = ray_start + ray_direction * len;
-		match sdf(point) {
-			SdfResult::Hit { range: _, color } => {
-				let normal = calculate_normal(sdf, point);
-				let light_dot = normal.dot(-light_direction);
-				let ray_dot = normal.dot(-ray_direction);
-				let color = if light_dot > 0.8 {
-					color.brighten(0.25)
-				} else if light_dot < 0.0 {
-					color.darken(0.25)
-				} else {
-					color
-				};
-				let color = if ray_dot < 0.4 {
-					color.darken(0.4)
-				} else {
-					color
-				};
-				return Some(color);
-			},
-			SdfResult::Miss { range } => len += range.max(MIN_STEP),
+		let result = sdf(point);
+		if result.range < 0.0 {
+			let light_dot = result.normal.dot(-light_direction);
+			let ray_dot = result.normal.dot(-ray_direction);
+			let color = if light_dot > 0.8 {
+				result.color.brighten(0.25)
+			} else if light_dot < 0.0 {
+				result.color.darken(0.25)
+			} else {
+				result.color
+			};
+			let color = if ray_dot < 0.4 {
+				color.darken(0.4)
+			} else {
+				color
+			};
+			return Some(color);
+		} else {
+			len += result.range.max(MIN_STEP);
 		}
 	}
 	None
-}
-
-fn calculate_normal<F>(sdf: &F, point: Vec3) -> Vec3
-	where F: Fn(Vec3) -> SdfResult
-{
-	let range_xp = get_range(sdf, point + Vec3::X * MIN_STEP);
-	let range_xm = get_range(sdf, point - Vec3::X * MIN_STEP);
-	let range_yp = get_range(sdf, point + Vec3::Y * MIN_STEP);
-	let range_ym = get_range(sdf, point - Vec3::Y * MIN_STEP);
-	let range_zp = get_range(sdf, point + Vec3::Z * MIN_STEP);
-	let range_zm = get_range(sdf, point - Vec3::Z * MIN_STEP);
-	Vec3::new(range_xp-range_xm, range_yp-range_ym, range_zp-range_zm).normalize()
-}
-
-fn get_range<F>(sdf: &F, point: Vec3) -> f32
-	where F: Fn(Vec3) -> SdfResult
-{
-	match sdf(point) {
-		SdfResult::Hit { range, color: _ } => range,
-		SdfResult::Miss { range } => range,
-	}
 }

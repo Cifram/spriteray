@@ -22,3 +22,7 @@ required-features = ["image"]
 [[example]]
 name = "union"
 required-features = ["image"]
+
+[[example]]
+name = "difference"
+required-features = ["image"]
