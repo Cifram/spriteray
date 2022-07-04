@@ -1,7 +1,9 @@
+mod capsule;
 mod color;
 mod cone;
 mod difference;
 mod math;
+mod mirror;
 mod plane;
 mod render;
 mod sdf_result;
@@ -10,10 +12,12 @@ mod torus;
 mod truncated_cone;
 mod union;
 
+pub use capsule::*;
 pub use color::*;
 pub use cone::*;
 pub use difference::*;
 pub use math::*;
+pub use mirror::*;
 pub use plane::*;
 pub use render::*;
 pub use sdf_result::*;

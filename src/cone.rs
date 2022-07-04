@@ -30,9 +30,14 @@ pub fn cone(pos: Vec3, radius: f32, height: f32, color: Color) -> SdfResult {
 			}
 		} else {
 			let rim_normal = Vec3::new(pos.x, 0.0, pos.z).normalize_or_zero();
+			let hypot_range = hypot.range(flat_pos);
 			SdfResult {
-				range: hypot.range(flat_pos),
-				normal: rim_normal * hypot_normal.x + Vec3::Y * hypot_normal.y,
+				range: hypot_range,
+				normal: if pos.y < -hypot_range {
+					Vec3::NEG_Y
+				} else {
+					rim_normal * hypot_normal.x + Vec3::Y * hypot_normal.y
+				},
 				color,
 			}
 		}
