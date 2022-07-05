@@ -1,11 +1,28 @@
-use glam::Vec3;
+use glam::{Vec3, Affine3A, Quat};
 
-use crate::{SdfResult, Color, cone, difference2, plane};
+use crate::{SdfResult, Color, Sdf, Difference2, Cone, Plane, Transform};
 
-pub fn truncated_cone(pos: Vec3, base_radius: f32, top_radius: f32, height: f32, color: Color) -> SdfResult {
-  let full_height = (height * base_radius) / (base_radius - top_radius);
-	difference2(pos,
-		&|pos| cone(pos, base_radius, full_height, color),
-		&|pos| plane(Vec3::new(pos.x, -pos.y + height, pos.z), color)
-	)
+pub struct TruncatedCone {
+	sdf: Difference2<Cone, Transform<Plane>>
+}
+
+impl TruncatedCone {
+	pub fn new(base_radius: f32, top_radius: f32, height: f32, color: Color) -> Self {
+		let full_height = (height * base_radius) / (base_radius - top_radius);
+		Self {
+			sdf: Difference2::new(
+				Cone::new(base_radius, full_height, color),
+				Transform::new(
+					Affine3A::from_scale_rotation_translation(Vec3::NEG_Y, Quat::IDENTITY, Vec3::Y * height),
+					Plane::new(color),
+				),
+			)
+		}
+	}
+}
+
+impl Sdf for TruncatedCone {
+	fn check(&self, pos: Vec3) -> SdfResult {
+		self.sdf.check(pos)
+	}
 }

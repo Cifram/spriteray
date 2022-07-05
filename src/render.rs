@@ -1,17 +1,15 @@
 use glam::{Vec3, Vec2};
 
-use crate::{Color, SdfResult};
+use crate::{Color, Sdf};
 
 const MIN_STEP: f32 = 0.01;
 
-pub fn render<F>(
-	sdf: &F,
+pub fn render<SdfT: Sdf>(
+	sdf: &SdfT,
 	width: usize, height: usize, max_range: f32,
 	cam_dims: Vec2, cam_pos: Vec3, cam_target: Vec3,
 	light_direction: Vec3
-) -> Vec<u8>
-	where F: Fn(Vec3) -> SdfResult
-{
+) -> Vec<u8> {
 	let start_time = std::time::SystemTime::now();
 	let mut pixels = Vec::new();
 
@@ -37,15 +35,13 @@ pub fn render<F>(
 	pixels
 }
 
-fn raycast<F>(
-	sdf: &F, ray_start: Vec3, ray_direction: Vec3, ray_length: f32, light_direction: Vec3
-) -> Option<Color>
-	where F: Fn(Vec3) -> SdfResult
-{
+fn raycast<SdfT: Sdf>(
+	sdf: &SdfT, ray_start: Vec3, ray_direction: Vec3, ray_length: f32, light_direction: Vec3
+) -> Option<Color> {
 	let mut len = 0.0;
 	while len < ray_length {
 		let point = ray_start + ray_direction * len;
-		let result = sdf(point);
+		let result = sdf.check(point);
 		if result.range < 0.0 {
 			let light_dot = result.normal.dot(-light_direction);
 			let ray_dot = result.normal.dot(-ray_direction);
