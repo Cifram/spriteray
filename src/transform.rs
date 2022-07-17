@@ -18,7 +18,7 @@ impl<SdfT: Sdf> Sdf for Transform<SdfT> {
 		let result = self.sdf.check(self.transform.transform_point3(pos));
 		SdfResult {
 			range: result.range,
-			normal: self.transform.transform_vector3(result.normal),
+			normal: self.transform.transform_vector3(result.normal).normalize_or_zero(),
 			color: result.color,
 		}
 	}
