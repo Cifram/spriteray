@@ -1,4 +1,8 @@
+#[path ="common/save_png.rs"]
+mod save_png;
+
 use glam::{Vec2, Vec3};
+use save_png::save_png;
 use spriteray::{Color, render, Sphere};
 
 fn main() {
@@ -9,6 +13,5 @@ fn main() {
 		Vec3::new(0.3, -1.0, 0.0).normalize()
 	);
 
-	std::fs::create_dir_all("example_images/").unwrap();
-	image::save_buffer("example_images/sphere.png", &bytes, 32, 32, image::ColorType::Rgba8).unwrap();
+	save_png("sphere", &bytes, 32, 32);
 }

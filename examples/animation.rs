@@ -1,4 +1,8 @@
+#[path ="common/save_png.rs"]
+mod save_png;
+
 use glam::{Vec2, Vec3, Affine3A};
+use save_png::save_png;
 use spriteray::{Color, Sphere, Union3, anim_render, Transform};
 
 fn main() {
@@ -28,6 +32,5 @@ fn main() {
 		Vec3::new(0.3, -1.0, 0.0).normalize()
 	).into_iter().flatten().collect();
 
-	std::fs::create_dir_all("example_images/").unwrap();
-	image::save_buffer("example_images/animation.png", &bytes, 32, 32*8, image::ColorType::Rgba8).unwrap();
+	save_png("animation", &bytes, 32, 32*8);
 }
