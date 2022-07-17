@@ -25,17 +25,10 @@ impl Capsule {
 					Affine3A::from_translation(Vec3::NEG_Y * height),
 					Sphere::new(radius2, color),
 				),
-				if cone_radius1 < cone_radius2 {
-					Transform::new(
-						Affine3A::from_translation(Vec3::Y * (height + cone_offset2)) * Affine3A::from_scale(Vec3::new(1.0, -1.0, 1.0)),
-						TruncatedCone::new(cone_radius2, cone_radius1, height - cone_offset2 + cone_offset1, color),
-					)
-				} else {
-					Transform::new(
-						Affine3A::from_translation(Vec3::NEG_Y * cone_offset1),
-						TruncatedCone::new(cone_radius1, cone_radius2, height - cone_offset1 + cone_offset2, color),
-					)
-				}
+				Transform::new(
+					Affine3A::from_translation(Vec3::NEG_Y * cone_offset1),
+					TruncatedCone::new(cone_radius1, cone_radius2, height - cone_offset1 + cone_offset2, color),
+				)
 			)
 		}
 	}
