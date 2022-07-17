@@ -1,3 +1,4 @@
+mod anim_render;
 mod capsule;
 mod color;
 mod cone;
@@ -14,6 +15,7 @@ mod transform;
 mod truncated_cone;
 mod union;
 
+pub use anim_render::*;
 pub use capsule::*;
 pub use color::*;
 pub use cone::*;

@@ -8,6 +8,10 @@ glam = "0.21.2"
 image = { version = "0.24.2", optional = true }
 
 [[example]]
+name = "animation"
+required-features = ["image"]
+
+[[example]]
 name = "sphere"
 required-features = ["image"]
 
