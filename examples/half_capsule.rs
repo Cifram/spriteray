@@ -3,11 +3,11 @@ mod save_png;
 
 use glam::{Vec2, Vec3};
 use save_png::save_png;
-use spriteray::{Color, render, HalfCapsule};
+use spriteray::{Color, render, half_capsule};
 
 fn main() {
 	let bytes = render(
-		&HalfCapsule::new(2.0, 1.0, 4.0, Color::new(1.0, 0.0, 0.0)),
+		half_capsule(2.0, 1.0, 4.0, Color::new(1.0, 0.0, 0.0)),
 		32, 32, 5.0,
 		Vec2::new(7.0, 7.0), Vec3::new(0.0, 4.0, 4.0), Vec3::new(0.0, 2.0, 0.0),
 		Vec3::new(0.3, -1.0, 0.0).normalize()

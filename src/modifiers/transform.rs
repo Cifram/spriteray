@@ -1,25 +1,14 @@
-use glam::Affine3A;
+use glam::{Affine3A, Vec3};
 
-use crate::{Sdf, SdfResult};
+use crate::SdfResult;
 
-pub struct Transform<SdfT: Sdf> {
-	transform: Affine3A,
-	sdf: SdfT,
-}
-
-impl<SdfT: Sdf> Transform<SdfT> {
-	pub fn new(transform: Affine3A, sdf: SdfT) -> Self {
-		Self { transform, sdf }
-	}
-}
-
-impl<SdfT: Sdf> Sdf for Transform<SdfT> {
-	fn check(&self, pos: glam::Vec3) -> SdfResult {
-		let result = self.sdf.check(self.transform.transform_point3(pos));
+pub fn transform(transform: Affine3A, sdf: Box<dyn Fn(Vec3) -> SdfResult>) -> Box<dyn Fn(Vec3) -> SdfResult> {
+	Box::new(move |pos| {
+		let result = sdf(transform.transform_point3(pos));
 		SdfResult {
 			range: result.range,
-			normal: self.transform.transform_vector3(result.normal).normalize_or_zero(),
-			color: result.color,
+			normal: transform.transform_vector3(result.normal),
+			color: result.color
 		}
-	}
+	})
 }

@@ -1,11 +1,13 @@
 use glam::{Vec3, Vec2};
 
-use crate::{Color, Sdf};
+use crate::{Color, SdfResult};
 
 const MIN_STEP: f32 = 0.01;
 
-pub fn render<SdfT: Sdf>(
-	sdf: &SdfT,
+pub type SdfFn = Box<dyn Fn(Vec3) -> SdfResult>;
+
+pub fn render(
+	sdf: SdfFn,
 	width: usize, height: usize, max_range: f32,
 	cam_dims: Vec2, cam_pos: Vec3, cam_target: Vec3,
 	light_direction: Vec3
@@ -21,7 +23,7 @@ pub fn render<SdfT: Sdf>(
 			let origin = cam_pos +
 				left * cam_dims.x * (x as f32 / (width - 1) as f32 - 0.5) +
 				-up * cam_dims.y * (y as f32 / (height - 1) as f32 - 0.5);
-			if let Some(color) = raycast(sdf, origin, direction, max_range, light_direction) {
+			if let Some(color) = raycast(&sdf, origin, direction, max_range, light_direction) {
 				pixels.extend_from_slice(&color.bytes());
 				pixels.push(255);
 			} else {
@@ -35,13 +37,13 @@ pub fn render<SdfT: Sdf>(
 	pixels
 }
 
-fn raycast<SdfT: Sdf>(
-	sdf: &SdfT, ray_start: Vec3, ray_direction: Vec3, ray_length: f32, light_direction: Vec3
+fn raycast(
+	sdf: &SdfFn, ray_start: Vec3, ray_direction: Vec3, ray_length: f32, light_direction: Vec3
 ) -> Option<Color> {
 	let mut len = 0.0;
 	while len < ray_length {
 		let point = ray_start + ray_direction * len;
-		let result = sdf.check(point);
+		let result = sdf(point);
 		if result.range < 0.0 {
 			let light_dot = result.normal.dot(-light_direction);
 			let ray_dot = result.normal.dot(-ray_direction);

@@ -3,22 +3,22 @@ mod save_png;
 
 use glam::{Vec2, Vec3, Affine3A};
 use save_png::save_png;
-use spriteray::{Color, render, Union3, Sphere, Transform};
+use spriteray::{Color, render, union3, transform, sphere};
 
 fn main() {
 	let bytes = render(
-		&Union3::new(
-			Transform::new(
+		union3(
+			transform(
 				Affine3A::from_translation(Vec3::X),
-				Sphere::new(1.5, Color::new(1.0, 0.0, 0.0)),
+				sphere(1.5, Color::new(1.0, 0.0, 0.0)),
 			),
-			Transform::new(
+			transform(
 				Affine3A::from_translation(Vec3::NEG_X),
-				Sphere::new(1.5, Color::new(0.0, 1.0, 0.0)),
+				sphere(1.5, Color::new(0.0, 1.0, 0.0)),
 			),
-			Transform::new(
+			transform(
 				Affine3A::from_translation(Vec3::NEG_Y),
-				Sphere::new(1.5, Color::new(0.0, 0.0, 1.0)),
+				sphere(1.5, Color::new(0.0, 0.0, 1.0)),
 			),
 		),
 		32, 32, 8.0,
