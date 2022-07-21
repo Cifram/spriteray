@@ -42,3 +42,7 @@ required-features = ["image"]
 [[example]]
 name = "difference"
 required-features = ["image"]
+
+[[example]]
+name = "skeleton"
+required-features = ["image"]

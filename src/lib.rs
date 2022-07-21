@@ -6,6 +6,7 @@ mod primitives;
 mod render;
 mod sdf;
 mod sdf_result;
+mod skeleton;
 
 pub use anim_render::*;
 pub use color::*;
@@ -15,3 +16,4 @@ pub use primitives::*;
 pub use render::*;
 pub use sdf::*;
 pub use sdf_result::*;
+pub use skeleton::*;
