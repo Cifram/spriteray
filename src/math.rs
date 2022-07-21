@@ -1,5 +1,6 @@
 use glam::Vec2;
 
+#[derive(Copy, Clone)]
 pub struct Line {
 	pub normal: Vec2,
 	pub offset: f32,
