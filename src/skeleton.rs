@@ -16,6 +16,7 @@ impl Bone {
 	}
 }
 
+#[derive(Clone)]
 pub struct Skeleton {
 	pub bones: HashMap<String, Bone>,
 }
@@ -48,12 +49,16 @@ impl Skeleton {
 	}
 }
 
+#[derive(Clone)]
 pub struct Pose {
 	pub bones: HashMap<String, Affine3A>,
 }
 
 impl Pose {
 	pub fn new(bones: HashMap<String, Affine3A>) -> Self {
+		for (name, transform) in bones.iter() {
+			assert!(!transform.is_nan(), "Bone {} has a NaN transform", name);
+		}
 		Self { bones }
 	}
 }
