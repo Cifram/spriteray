@@ -12,11 +12,7 @@ name = "animation"
 required-features = ["image"]
 
 [[example]]
-name = "sphere"
-required-features = ["image"]
-
-[[example]]
-name = "torus"
+name = "capsule"
 required-features = ["image"]
 
 [[example]]
@@ -24,7 +20,7 @@ name = "cone"
 required-features = ["image"]
 
 [[example]]
-name = "capsule"
+name = "cylinder"
 required-features = ["image"]
 
 [[example]]
@@ -45,4 +41,12 @@ required-features = ["image"]
 
 [[example]]
 name = "skeleton"
+required-features = ["image"]
+
+[[example]]
+name = "sphere"
+required-features = ["image"]
+
+[[example]]
+name = "torus"
 required-features = ["image"]
