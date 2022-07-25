@@ -1,5 +1,6 @@
 mod anim_render;
 mod color;
+mod humanoid;
 mod math;
 mod modifiers;
 mod primitives;
@@ -10,6 +11,7 @@ mod skeleton;
 
 pub use anim_render::*;
 pub use color::*;
+pub use humanoid::*;
 pub use math::*;
 pub use modifiers::*;
 pub use primitives::*;

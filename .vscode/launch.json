@@ -7,25 +7,6 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in library 'spriteray'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--lib",
-					"--package=spriteray"
-				],
-				"filter": {
-					"name": "spriteray",
-					"kind": "lib"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
 			"name": "Debug example 'sphere'",
 			"cargo": {
 				"args": [
@@ -33,25 +14,6 @@
 					"--example=sphere",
 					"--package=spriteray",
 					"--features=image"
-				],
-				"filter": {
-					"name": "sphere",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
-			"name": "Debug unit tests in example 'sphere'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=sphere",
-					"--package=spriteray"
 				],
 				"filter": {
 					"name": "sphere",
@@ -83,25 +45,6 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in example 'torus'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=torus",
-					"--package=spriteray"
-				],
-				"filter": {
-					"name": "torus",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
 			"name": "Debug example 'cone'",
 			"cargo": {
 				"args": [
@@ -109,25 +52,6 @@
 					"--example=cone",
 					"--package=spriteray",
 					"--features=image"
-				],
-				"filter": {
-					"name": "cone",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
-			"name": "Debug unit tests in example 'cone'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=cone",
-					"--package=spriteray"
 				],
 				"filter": {
 					"name": "cone",
@@ -159,25 +83,6 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in example 'capsule'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=capsule",
-					"--package=spriteray"
-				],
-				"filter": {
-					"name": "capsule",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
 			"name": "Debug example 'truncated_cone'",
 			"cargo": {
 				"args": [
@@ -185,25 +90,6 @@
 					"--example=truncated_cone",
 					"--package=spriteray",
 					"--features=image"
-				],
-				"filter": {
-					"name": "truncated_cone",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
-			"name": "Debug unit tests in example 'truncated_cone'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=truncated_cone",
-					"--package=spriteray"
 				],
 				"filter": {
 					"name": "truncated_cone",
@@ -235,25 +121,6 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in example 'union'",
-			"cargo": {
-				"args": [
-					"test",
-					"--no-run",
-					"--example=union",
-					"--package=spriteray"
-				],
-				"filter": {
-					"name": "union",
-					"kind": "example"
-				}
-			},
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		},
-		{
-			"type": "lldb",
-			"request": "launch",
 			"name": "Debug example 'difference'",
 			"cargo": {
 				"args": [
@@ -273,21 +140,21 @@
 		{
 			"type": "lldb",
 			"request": "launch",
-			"name": "Debug unit tests in example 'difference'",
+			"name": "Debug example 'humanoid'",
 			"cargo": {
 				"args": [
-					"test",
-					"--no-run",
-					"--example=difference",
-					"--package=spriteray"
+					"build",
+					"--example=humanoid",
+					"--package=spriteray",
+					"--features=image"
 				],
 				"filter": {
-					"name": "difference",
+					"name": "humanoid",
 					"kind": "example"
 				}
 			},
 			"args": [],
 			"cwd": "${workspaceFolder}"
-		}
+		},
 	]
 }

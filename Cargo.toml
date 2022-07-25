@@ -28,6 +28,10 @@ name = "half_capsule"
 required-features = ["image"]
 
 [[example]]
+name = "humanoid"
+required-features = ["image"]
+
+[[example]]
 name = "truncated_cone"
 required-features = ["image"]
 
