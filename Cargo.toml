@@ -24,6 +24,10 @@ name = "cylinder"
 required-features = ["image"]
 
 [[example]]
+name = "cube"
+required-features = ["image"]
+
+[[example]]
 name = "half_capsule"
 required-features = ["image"]
 

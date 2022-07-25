@@ -1,5 +1,6 @@
 mod capsule;
 mod cone;
+mod cube;
 mod cylinder;
 mod half_capsule;
 mod infinite_cone;
@@ -11,6 +12,7 @@ mod truncated_cone;
 
 pub use capsule::*;
 pub use cone::*;
+pub use cube::*;
 pub use cylinder::*;
 pub use half_capsule::*;
 pub use infinite_cone::*;
