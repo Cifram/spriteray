@@ -7,7 +7,7 @@ use spriteray::{Color, anim_render, union3, transform, sphere};
 
 fn main() {
 	let bytes: Vec<u8> = anim_render(
-		|time| {
+		Box::new(move |time| {
 			let time1 = time;
 			let time2 = time + std::f32::consts::PI * 2.0 / 3.0;
 			let time3 = time + std::f32::consts::PI * 4.0 / 3.0;
@@ -25,7 +25,7 @@ fn main() {
 					sphere(1.0, Color::new(0.0, 0.0, 1.0)),
 				)
 			)
-		},
+		}),
 		32, 32, 5.0,
 		0.0, std::f32::consts::PI * 2.0, std::f32::consts::PI / 4.0,
 		Vec2::new(4.0, 4.0), Vec3::new(0.0, 2.0, 4.0), Vec3::ZERO,
