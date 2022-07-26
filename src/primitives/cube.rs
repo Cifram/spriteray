@@ -1,34 +1,14 @@
-use glam::{Vec3, Affine3A, Quat};
+use glam::Vec3;
 
-use crate::{Color, SdfFn, transform, difference6, plane};
+use crate::{Color, SdfFn, plane_normal_offset, difference6};
 
-const PI: f32 = std::f32::consts::PI;
-
-pub fn cube(width: f32, color: Color) -> SdfFn {
+pub fn cube(size: f32, color: Color) -> SdfFn {
 	difference6(
-		transform(
-			Affine3A::from_scale(Vec3::new(1.0, -1.0, 1.0)),
-			plane(color),
-		),
-		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_x(PI), Vec3::Y * width),
-			plane(color),
-		),
-		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_x(PI / 2.0), Vec3::Y * width / 2.0),
-			plane(color),
-		),
-		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0), Vec3::Y * width / 2.0),
-			plane(color),
-		),
-		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_z(PI / 2.0), Vec3::Y * width / 2.0),
-			plane(color),
-		),
-		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_z(-PI / 2.0), Vec3::Y * width / 2.0),
-			plane(color),
-		)
+		plane_normal_offset(Vec3::NEG_Y, 0.0, color),
+		plane_normal_offset(Vec3::NEG_Y, size, color),
+		plane_normal_offset(Vec3::NEG_X, size / 2.0, color),
+		plane_normal_offset(Vec3::X, size / 2.0, color),
+		plane_normal_offset(Vec3::NEG_Z, size / 2.0, color),
+		plane_normal_offset(Vec3::Z, size / 2.0, color),
 	)
 }
