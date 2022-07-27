@@ -177,7 +177,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 	let base_hip_height = props.thigh_length + props.calf_length;
 	let hip_pos = Vec3::NEG_Y * pose.hip_height;
 
-	let (left_leg_rotation, left_thigh_angle, left_knee_angle, left_foot_rotation) = leg_ik(
+	let (left_hip_rotation, left_knee_rotation, left_foot_rotation) = leg_ik(
 		props,
 		pose.torso_rotation * Vec3::X,
 		base_hip_height,
@@ -185,7 +185,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		pose.left_foot_position,
 		pose.left_toes_vertical_offset
 	);
-	let (right_leg_rotation, right_thigh_angle, right_knee_angle, right_foot_rotation) = leg_ik(
+	let (right_hip_rotation, right_knee_rotation, right_foot_rotation) = leg_ik(
 		props,
 		pose.torso_rotation * Vec3::NEG_X,
 		base_hip_height,
@@ -201,11 +201,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"left_thigh".to_string(),
-			Affine3A::from_rotation_x(left_thigh_angle) * Affine3A::from_rotation_translation(left_leg_rotation, Vec3::ZERO),
+			Affine3A::from_quat(left_hip_rotation),
 		),
 		(
 			"left_calf".to_string(),
-			Affine3A::from_rotation_x(left_knee_angle),
+			Affine3A::from_quat(left_knee_rotation),
 		),
 		(
 			"left_foot".to_string(),
@@ -213,11 +213,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"right_thigh".to_string(),
-			Affine3A::from_rotation_x(right_thigh_angle) * Affine3A::from_rotation_translation(right_leg_rotation, Vec3::ZERO),
+			Affine3A::from_quat(right_hip_rotation),
 		),
 		(
 			"right_calf".to_string(),
-			Affine3A::from_rotation_x(right_knee_angle),
+			Affine3A::from_quat(right_knee_rotation),
 		),
 		(
 			"right_foot".to_string(),
@@ -273,7 +273,7 @@ fn leg_ik(
 	hip_pos: Vec3,
 	foot_position: Vec3,
 	toe_vertical_offset: f32,
-) -> (Quat, f32, f32, Quat) {
+) -> (Quat, Quat, Quat) {
 	assert!(props.foot_length.abs() > toe_vertical_offset.abs(),
 		"The toe_vertical_offset of {} is longer than the foot length of {}", toe_vertical_offset, props.foot_length
 	);
@@ -290,19 +290,19 @@ fn leg_ik(
 		foot_range_sqr = foot_range * foot_range;
 	}
 	let foot_dir = foot_offset / foot_range;
-	let leg_rotation = Quat::from_rotation_arc(Vec3::Y, foot_dir);
-	let thigh_angle = (
-		(foot_range_sqr + thigh_length_sqr - calf_length_sqr) /
-		(2.0 * foot_range * props.thigh_length)
-	).acos();
-	let knee_angle = (
+	let hip_rotation =
+		Quat::from_rotation_arc(Vec3::Y, foot_dir) *
+		Quat::from_rotation_x((
+			(foot_range_sqr + thigh_length_sqr - calf_length_sqr) /
+			(2.0 * foot_range * props.thigh_length)
+		).acos());
+	let knee_rotation = Quat::from_rotation_x((
 		(thigh_length_sqr + calf_length_sqr - foot_range_sqr) /
 		(2.0 * props.thigh_length * props.calf_length)
-	).acos() - PI;
+	).acos() - PI);
 	let foot_rotation =
-		leg_rotation.inverse() *
-		Quat::from_rotation_x(-thigh_angle) *
-		Quat::from_rotation_x(-knee_angle) *
+		hip_rotation.inverse() *
+		knee_rotation.inverse() *
 		Quat::from_rotation_arc(Vec3::Y,
 			(
 				Vec3::Y * (props.foot_length * props.foot_length - toe_vertical_offset * toe_vertical_offset).sqrt() +
@@ -310,5 +310,5 @@ fn leg_ik(
 			).normalize()
 		);
 
-	(leg_rotation, thigh_angle, knee_angle, foot_rotation)
+	(hip_rotation, knee_rotation, foot_rotation)
 }
