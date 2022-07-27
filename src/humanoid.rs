@@ -55,49 +55,49 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 		(
 			"hips".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * (props.thigh_length + props.calf_length)),
+				Affine3A::from_translation(Vec3::Y * (props.thigh_length + props.calf_length)),
 				None,
 			),
 		),
 		(
 			"left_thigh".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(PI), Vec3::X * props.hip_width),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI), Vec3::X * props.hip_width),
 				Some("hips".to_string()),
 			),
 		),
 		(
 			"left_calf".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.thigh_length),
+				Affine3A::from_translation(Vec3::Y * props.thigh_length),
 				Some("left_thigh".to_string()),
 			),
 		),
 		(
 			"left_foot".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(PI / 2.0) * Quat::from_rotation_y(PI / -8.0), Vec3::NEG_Z * props.calf_length),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_z(-PI / -8.0), Vec3::Y * props.calf_length),
 				Some("left_calf".to_string()),
 			),
 		),
 		(
 			"right_thigh".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(PI), Vec3::NEG_X * props.hip_width),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI), Vec3::NEG_X * props.hip_width),
 				Some("hips".to_string()),
 			),
 		),
 		(
 			"right_calf".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.thigh_length),
+				Affine3A::from_translation(Vec3::Y * props.thigh_length),
 				Some("right_thigh".to_string()),
 			),
 		),
 		(
 			"right_foot".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(PI / 2.0) * Quat::from_rotation_y(PI / 8.0), Vec3::NEG_Z * props.calf_length),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_y(-PI / 8.0), Vec3::Y * props.calf_length),
 				Some("right_calf".to_string()),
 			),
 		),
@@ -111,63 +111,63 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 		(
 			"chest".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.torso_height * 0.66),
+				Affine3A::from_translation(Vec3::Y * props.torso_height * 0.66),
 				Some("midriff".to_string()),
 			),
 		),
 		(
 			"neck".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.torso_height * 0.34),
+				Affine3A::from_translation(Vec3::Y * props.torso_height * 0.34),
 				Some("chest".to_string()),
 			)
 		),
 		(
 			"head".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.neck_length),
+				Affine3A::from_translation(Vec3::Y * props.neck_length),
 				Some("neck".to_string()),
 			),
 		),
 		(
 			"left_upper_arm".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_z(PI / 2.0), Vec3::new(props.torso_height * 0.34, -props.shoulder_width, 0.0)),
+				Affine3A::from_rotation_translation(Quat::from_rotation_z(-PI / 2.0), Vec3::new(props.shoulder_width, props.torso_height * 0.34, 0.0)),
 				Some("chest".to_string()),
 			),
 		),
 		(
 			"left_lower_arm".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.upper_arm_length),
+				Affine3A::from_translation(Vec3::Y * props.upper_arm_length),
 				Some("left_upper_arm".to_string()),
 			),
 		),
 		(
 			"left_hand".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.lower_arm_length),
+				Affine3A::from_translation(Vec3::Y * props.lower_arm_length),
 				Some("left_lower_arm".to_string()),
 			),
 		),
 		(
 			"right_upper_arm".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_z(-PI / 2.0), Vec3::new(-props.torso_height * 0.34, -props.shoulder_width, 0.0)),
+				Affine3A::from_rotation_translation(Quat::from_rotation_z(PI / 2.0), Vec3::new(-props.shoulder_width, props.torso_height * 0.34, 0.0)),
 				Some("chest".to_string()),
 			),
 		),
 		(
 			"right_lower_arm".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.upper_arm_length),
+				Affine3A::from_translation(Vec3::Y * props.upper_arm_length),
 				Some("right_upper_arm".to_string()),
 			),
 		),
 		(
 			"right_hand".to_string(),
 			Bone::new(
-				Affine3A::from_translation(Vec3::NEG_Y * props.lower_arm_length),
+				Affine3A::from_translation(Vec3::Y * props.lower_arm_length),
 				Some("right_lower_arm".to_string()),
 			),
 		),
@@ -176,7 +176,7 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 
 pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescriptor) -> Pose {
 	let base_hip_height = props.thigh_length + props.calf_length;
-	let hip_pos = Vec3::NEG_Y * pose.hip_height;
+	let hip_pos = Vec3::Y * pose.hip_height;
 
 	let (left_hip_rotation, left_knee_rotation, left_foot_rotation) = leg_ik(
 		props,
@@ -198,7 +198,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 	Pose::new(HashMap::from([
 		(
 			"hips".to_string(),
-			Affine3A::from_rotation_translation(pose.hip_rotation, Vec3::Y * (base_hip_height - pose.hip_height)),
+			Affine3A::from_rotation_translation(pose.hip_rotation, Vec3::NEG_Y * (base_hip_height - pose.hip_height)),
 		),
 		(
 			"left_thigh".to_string(),
@@ -242,11 +242,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"left_upper_arm".to_string(),
-			Affine3A::from_rotation_z(PI / 4.0),
+			Affine3A::from_rotation_z(-PI / 4.0),
 		),
 		(
 			"left_lower_arm".to_string(),
-			Affine3A::from_rotation_z(PI / 4.0),
+			Affine3A::from_rotation_z(-PI / 4.0),
 		),
 		(
 			"left_hand".to_string(),
@@ -254,11 +254,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"right_upper_arm".to_string(),
-			Affine3A::from_rotation_z(-PI / 4.0),
+			Affine3A::from_rotation_z(PI / 4.0),
 		),
 		(
 			"right_lower_arm".to_string(),
-			Affine3A::from_rotation_z(-PI / 4.0),
+			Affine3A::from_rotation_z(PI / 4.0),
 		),
 		(
 			"right_hand".to_string(),
@@ -292,22 +292,23 @@ fn leg_ik(
 	}
 	let foot_dir = foot_offset / foot_range;
 	let hip_rotation =
-		Quat::from_rotation_arc(Vec3::Y, foot_dir) *
-		Quat::from_rotation_x((
+		Quat::from_rotation_arc(Vec3::NEG_Y, foot_dir) *
+		Quat::from_rotation_x(-(
 			(foot_range_sqr + thigh_length_sqr - calf_length_sqr) /
 			(2.0 * foot_range * props.thigh_length)
 		).acos());
-	let knee_rotation = Quat::from_rotation_x((
+	let knee_rotation = Quat::from_rotation_x(PI - (
 		(thigh_length_sqr + calf_length_sqr - foot_range_sqr) /
 		(2.0 * props.thigh_length * props.calf_length)
-	).acos() - PI);
+	).acos());
 	let foot_rotation =
 		hip_rotation.inverse() *
 		knee_rotation.inverse() *
-		Quat::from_rotation_arc(Vec3::Y,
-			(
-				Vec3::Y * (props.foot_length * props.foot_length - toe_vertical_offset * toe_vertical_offset).sqrt() +
-				Vec3::Z * toe_vertical_offset
+		Quat::from_rotation_arc(Vec3::Z,
+			Vec3::new(
+				0.0,
+				toe_vertical_offset,
+				(props.foot_length * props.foot_length - toe_vertical_offset * toe_vertical_offset).sqrt(),
 			).normalize()
 		);
 

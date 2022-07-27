@@ -11,7 +11,7 @@ pub fn half_capsule(bottom_radius: f32, top_radius: f32, height: f32, color: Col
 	union2(
 		sphere(bottom_radius, color),
 		transform(
-			Affine3A::from_translation(Vec3::NEG_Y * (height - adj_height)),
+			Affine3A::from_translation(Vec3::Y * (height - adj_height)),
 			truncated_cone(adj_bottom_radius, top_radius, adj_height, color),
 		)
 	)

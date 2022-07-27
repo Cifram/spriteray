@@ -38,11 +38,11 @@ impl Skeleton {
 		if final_pose.contains_key(name) {
 			return;
 		}
-		let transform = pose.bones[name] * bone.transform;
+		let transform = bone.transform * pose.bones[name];
 		if let Some(parent_name) = bone.parent.clone() {
 			let parent_bone = self.bones[&parent_name].clone();
 			self.set_bone_transform(&parent_name, &parent_bone, pose, final_pose);
-			final_pose.insert(name.to_string(), transform * final_pose[&parent_name]);
+			final_pose.insert(name.to_string(), final_pose[&parent_name] * transform);
 		} else {
 			final_pose.insert(name.to_string(), transform);
 		}

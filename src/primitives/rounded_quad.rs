@@ -15,24 +15,24 @@ pub fn rounded_quad(bottom_width: f32, top_width: f32, height: f32, bottom_depth
 	let back_plane_normal = front_plane_normal * Vec3::new(1.0, 1.0, -1.0);
 	union5(
 		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_z(PI/2.0), Vec3::Y * bottom_width/2.0),
+			Affine3A::from_rotation_translation(Quat::from_rotation_z(PI/2.0), Vec3::Y * bottom_width/2.0).inverse(),
 			capsule(bottom_depth, bottom_depth, bottom_width, color),
 		),
 		transform(
-			Affine3A::from_rotation_translation(Quat::from_rotation_z(PI/2.0), Vec3::new(height, top_width/2.0, 0.0)),
+			Affine3A::from_rotation_translation(Quat::from_rotation_z(PI/2.0), Vec3::new(height, top_width/2.0, 0.0)).inverse(),
 			capsule(top_depth, top_depth, top_width, color),
 		),
 		transform(
-			Affine3A::from_translation(Vec3::X * bottom_width/2.0),
+			Affine3A::from_translation(Vec3::X * bottom_width/2.0).inverse(),
 			transform(
-				Affine3A::from_rotation_z(side_angle),
+				Affine3A::from_rotation_z(side_angle).inverse(),
 				capsule(bottom_depth, top_depth, side_length, color),
 			)
 		),
 		transform(
-			Affine3A::from_translation(Vec3::NEG_X * bottom_width/2.0),
+			Affine3A::from_translation(Vec3::NEG_X * bottom_width/2.0).inverse(),
 			transform(
-				Affine3A::from_rotation_z(-side_angle),
+				Affine3A::from_rotation_z(-side_angle).inverse(),
 				capsule(bottom_depth, top_depth, side_length, color),
 			)
 		),

@@ -10,15 +10,15 @@ fn main() {
 		difference4(
 			sphere(2.0, Color::new(0.7, 0.7, 0.7)),
 			transform(
-				Affine3A::from_translation(Vec3::new(0.0, 0.5, -2.0)),
+				Affine3A::from_translation(Vec3::new(0.0, 0.5, 2.0)),
 				sphere(1.0, Color::new(1.0, 0.0, 0.0)),
 			),
 			transform(
-				Affine3A::from_translation(Vec3::new(0.5, 0.0, -2.0)),
+				Affine3A::from_translation(Vec3::new(0.5, 0.0, 2.0)),
 				sphere(1.0, Color::new(0.0, 1.0, 0.0)),
 			),
 			transform(
-				Affine3A::from_translation(Vec3::new(-0.5, 0.0, -2.0)),
+				Affine3A::from_translation(Vec3::new(-0.5, 0.0, 2.0)),
 				sphere(1.0, Color::new(0.0, 0.0, 1.0)),
 			),
 		),

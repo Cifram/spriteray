@@ -17,8 +17,8 @@ fn main() {
 
 	let bytes: Vec<u8> = anim_render(
 		Box::new(move |time| {
-			let (left_foot_position, left_toes_vertical_offset) = walk_foot_position_by_time(time, 0.18);
-			let (right_foot_position, right_toes_vertical_offset) = walk_foot_position_by_time((time + 0.5) % 1.0, -0.18);
+			let (left_foot_position, left_toes_vertical_offset) = walk_foot_position_by_time((time + 0.5) % 1.0, 0.18);
+			let (right_foot_position, right_toes_vertical_offset) = walk_foot_position_by_time(time, -0.18);
 			let pose = build_humanoid_pose(props, HumanoidPoseDescriptor {
 				hip_height: 0.5 + ((time * 2.0 * PI).sin() * 0.15).abs(),
 				hip_rotation: Quat::from_rotation_y((time * 2.0 * PI).cos() * PI / 16.0),
@@ -34,7 +34,7 @@ fn main() {
 				right_hand_rotation: Quat::IDENTITY,
 			});
 			transform(
-				Affine3A::from_rotation_y(-PI/4.0 + PI/2.0),
+				Affine3A::from_rotation_y(PI/4.0 - PI/2.0),
 				skeleton(skel.clone(), pose, make_char(props)),
 			)
 		}),
@@ -66,7 +66,7 @@ fn make_char(props: HumanoidProportions) -> Character {
 		(
 			"hips".to_string(),
 			transform(
-				Affine3A::from_rotation_translation(Quat::from_rotation_z(PI/2.0), Vec3::Y * props.hip_width),
+				Affine3A::from_rotation_translation(Quat::from_rotation_z(-PI/2.0), Vec3::NEG_X * props.hip_width),
 				capsule(thigh_width, thigh_width, props.hip_width * 2.0, SKIN),
 			)
 		),
@@ -110,8 +110,8 @@ fn make_char(props: HumanoidProportions) -> Character {
 				rounded_quad(torso_width, torso_width, chest_height - (thigh_width - shoulder_width), thigh_width, thigh_width, SKIN),
 				transform(
 					Affine3A::from_rotation_translation(
-						Quat::from_rotation_z(PI / 2.0),
-						Vec3::new(chest_height, props.shoulder_width, 0.0),
+						Quat::from_rotation_z(-PI / 2.0),
+						Vec3::new(-props.shoulder_width, chest_height, 0.0),
 					),
 					capsule(shoulder_width, shoulder_width, props.shoulder_width * 2.0, SKIN),
 				),
@@ -124,9 +124,9 @@ fn make_char(props: HumanoidProportions) -> Character {
 		(
 			"head".to_string(),
 			transform(
-				Affine3A::from_translation(Vec3::new(0.0, -head_radius, -head_radius / 3.0)),
+				Affine3A::from_translation(Vec3::new(0.0, head_radius, head_radius / 3.0)),
 				transform(
-					Affine3A::from_rotation_x(-3.0 * PI / 4.0),
+					Affine3A::from_rotation_x(3.0 * PI / 4.0),
 					capsule(head_radius, head_radius / 2.0, head_radius * 0.75, SKIN),
 				),
 			),
@@ -142,7 +142,7 @@ fn make_char(props: HumanoidProportions) -> Character {
 		(
 			"left_hand".to_string(),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y * hand_width / 2.0),
+				Affine3A::from_translation(Vec3::Y * hand_width / 2.0),
 				sphere(hand_width, SKIN),
 			),
 		),
@@ -157,7 +157,7 @@ fn make_char(props: HumanoidProportions) -> Character {
 		(
 			"right_hand".to_string(),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y * hand_width / 2.0),
+				Affine3A::from_translation(Vec3::Y * hand_width / 2.0),
 				sphere(hand_width, SKIN),
 			),
 		),
@@ -167,12 +167,12 @@ fn make_char(props: HumanoidProportions) -> Character {
 fn walk_foot_position_by_time(time: f32, x: f32) -> (Vec3, f32) {
 	if time < 0.5 {
 		(
-			Vec3::new(x, (time * 2.0 * PI).sin() * -0.2, time - 0.25),
+			Vec3::new(x, (time * 2.0 * PI).sin() * 0.2, time - 0.25),
 			(0.5 - time) * 2.0 * -0.05,
 		)
 	} else {
 		(
-			Vec3::new(x, (time - 0.5) * 2.0 * -0.05, 0.75 - time),
+			Vec3::new(x, (time - 0.5) * 2.0 * 0.05, 0.75 - time),
 			(time - 0.5) * 2.0 * -0.05,
 		)
 	}

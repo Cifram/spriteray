@@ -17,7 +17,7 @@ fn main() {
 				sphere(1.5, Color::new(0.0, 1.0, 0.0)),
 			),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y),
+				Affine3A::from_translation(Vec3::Y),
 				sphere(1.5, Color::new(0.0, 0.0, 1.0)),
 			),
 		),

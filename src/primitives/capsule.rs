@@ -7,7 +7,7 @@ pub fn capsule(radius1: f32, radius2: f32, height: f32, color: Color) -> SdfFn {
 		union3(
 			sphere(radius1, color),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y * height),
+				Affine3A::from_translation(Vec3::Y * height),
 				sphere(radius2, color),
 			),
 			cylinder(radius1, height, color),
@@ -26,11 +26,11 @@ pub fn capsule(radius1: f32, radius2: f32, height: f32, color: Color) -> SdfFn {
 		union3(
 			sphere(radius1, color),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y * height),
+				Affine3A::from_translation(Vec3::Y * height),
 				sphere(radius2, color),
 			),
 			transform(
-				Affine3A::from_translation(Vec3::NEG_Y * cone_offset1),
+				Affine3A::from_translation(Vec3::Y * cone_offset1),
 				truncated_cone(cone_radius1, cone_radius2, height - cone_offset1 + cone_offset2, color),
 			)
 		)
