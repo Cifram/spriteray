@@ -19,8 +19,10 @@ fn main() {
 		Box::new(move |time| {
 			let (left_foot_position, left_toes_vertical_offset) = walk_foot_position_by_time((time + 0.5) % 1.0, 0.18);
 			let (right_foot_position, right_toes_vertical_offset) = walk_foot_position_by_time(time, -0.18);
+			let walk_period_1 = (time * 2.0 * PI).sin();
+			let walk_period_2 = (time * 2.0 * PI).cos();
 			let pose = build_humanoid_pose(props, HumanoidPoseDescriptor {
-				hip_height: 0.5 + ((time * 2.0 * PI).sin() * 0.15).abs(),
+				hip_height: 0.55 + walk_period_1.abs() * 0.1,
 				hip_rotation: Quat::from_rotation_y((time * 2.0 * PI).cos() * PI / 16.0),
 				chest_rotation: Quat::from_rotation_y((time * 2.0 * PI).cos() * -PI / 8.0),
 				head_rotation: Quat::IDENTITY,
@@ -28,11 +30,11 @@ fn main() {
 				left_toes_vertical_offset,
 				right_foot_position,
 				right_toes_vertical_offset,
-				left_hand_position: Vec3::new(0.6, 0.7, 0.0),
+				left_hand_position: Vec3::new(props.shoulder_width, 0.7 + walk_period_1.abs() * 0.0, -walk_period_2 * 0.3),
 				left_hand_rotation: Quat::IDENTITY,
-				right_hand_position: Vec3::new(-0.6, 0.7, 0.0),
+				right_hand_position: Vec3::new(-props.shoulder_width, 0.7 + walk_period_1.abs() * 0.0, walk_period_2 * 0.3),
 				right_hand_rotation: Quat::IDENTITY,
-			});
+			}, &skel);
 			transform(
 				Affine3A::from_rotation_y(PI/4.0 - PI/2.0),
 				skeleton(skel.clone(), pose, make_char(props)),
@@ -52,7 +54,7 @@ fn make_char(props: HumanoidProportions) -> Character {
 	let knee_width = thigh_width * 0.75;
 	let ankle_width = thigh_width * 0.5;
 	let foot_width = ankle_width * 1.2;
-	let shoulder_width = thigh_width * 0.5;
+	let shoulder_width = thigh_width * 0.6;
 	let elbow_width = shoulder_width;
 	let wrist_width = elbow_width;
 	let hand_width = wrist_width * 1.5;
@@ -167,13 +169,13 @@ fn make_char(props: HumanoidProportions) -> Character {
 fn walk_foot_position_by_time(time: f32, x: f32) -> (Vec3, f32) {
 	if time < 0.5 {
 		(
-			Vec3::new(x, (time * 2.0 * PI).sin() * 0.2, time - 0.25),
-			(0.5 - time) * 2.0 * -0.05,
+			Vec3::new(x, (time * 2.0 * PI).sin() * 0.1 + (0.5 - time) * 2.0 * 0.1, time - 0.25),
+			(0.5 - time) * 2.0 * -0.1,
 		)
 	} else {
 		(
-			Vec3::new(x, (time - 0.5) * 2.0 * 0.05, 0.75 - time),
-			(time - 0.5) * 2.0 * -0.05,
+			Vec3::new(x, (time - 0.5) * 2.0 * 0.1, 0.75 - time),
+			(time - 0.5) * 2.0 * -0.1,
 		)
 	}
 }

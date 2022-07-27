@@ -174,31 +174,39 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 	]))
 }
 
-pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescriptor) -> Pose {
-	let base_hip_height = props.thigh_length + props.calf_length;
-	let hip_pos = Vec3::Y * pose.hip_height;
+pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescriptor, skel: &Skeleton) -> Pose {
+	let torso_pose = build_torso_only_pose(&props, &pose);
+	let torso_final_transforms = skel.pose(&torso_pose);
 
 	let (left_hip_rotation, left_knee_rotation, left_foot_rotation) = leg_ik(
 		props,
-		pose.hip_rotation * Vec3::X,
-		base_hip_height,
-		hip_pos,
+		torso_final_transforms["left_thigh"].transform_point3(Vec3::ZERO),
 		pose.left_foot_position,
 		pose.left_toes_vertical_offset
 	);
 	let (right_hip_rotation, right_knee_rotation, right_foot_rotation) = leg_ik(
 		props,
-		pose.hip_rotation * Vec3::NEG_X,
-		base_hip_height,
-		hip_pos,
+		torso_final_transforms["right_thigh"].transform_point3(Vec3::ZERO),
 		pose.right_foot_position,
 		pose.right_toes_vertical_offset
+	);
+	let (left_shoulder_rotation, left_elbow_rotation) = arm_ik(
+		props,
+		torso_final_transforms["left_upper_arm"].transform_vector3(Vec3::Y),
+		torso_final_transforms["left_upper_arm"].transform_point3(Vec3::ZERO),
+		pose.left_hand_position,
+	);
+	let (right_shoulder_rotation, right_elbow_rotation) = arm_ik(
+		props,
+		torso_final_transforms["right_upper_arm"].transform_vector3(Vec3::Y),
+		torso_final_transforms["right_upper_arm"].transform_point3(Vec3::ZERO),
+		pose.right_hand_position,
 	);
 
 	Pose::new(HashMap::from([
 		(
 			"hips".to_string(),
-			Affine3A::from_rotation_translation(pose.hip_rotation, Vec3::NEG_Y * (base_hip_height - pose.hip_height)),
+			torso_pose.bones["hips"],
 		),
 		(
 			"left_thigh".to_string(),
@@ -226,6 +234,82 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"midriff".to_string(),
+			torso_pose.bones["midriff"],
+		),
+		(
+			"chest".to_string(),
+			torso_pose.bones["chest"],
+		),
+		(
+			"neck".to_string(),
+			torso_pose.bones["neck"],
+		),
+		(
+			"head".to_string(),
+			torso_pose.bones["head"],
+		),
+		(
+			"left_upper_arm".to_string(),
+			// Affine3A::IDENTITY,
+			Affine3A::from_quat(left_shoulder_rotation),
+		),
+		(
+			"left_lower_arm".to_string(),
+			Affine3A::from_quat(left_elbow_rotation),
+		),
+		(
+			"left_hand".to_string(),
+			Affine3A::from_quat(pose.left_hand_rotation),
+		),
+		(
+			"right_upper_arm".to_string(),
+			Affine3A::from_quat(right_shoulder_rotation),
+		),
+		(
+			"right_lower_arm".to_string(),
+			Affine3A::from_quat(right_elbow_rotation),
+		),
+		(
+			"right_hand".to_string(),
+			Affine3A::from_quat(pose.right_hand_rotation),
+		),
+	]))
+}
+
+fn build_torso_only_pose(props: &HumanoidProportions, pose: &HumanoidPoseDescriptor) -> Pose {
+	let base_hip_height = props.thigh_length + props.calf_length;
+
+	Pose::new(HashMap::from([
+		(
+			"hips".to_string(),
+			Affine3A::from_rotation_translation(pose.hip_rotation, Vec3::Y * (pose.hip_height - base_hip_height)),
+		),
+		(
+			"left_thigh".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"left_calf".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"left_foot".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"right_thigh".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"right_calf".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"right_foot".to_string(),
+			Affine3A::IDENTITY,
+		),
+		(
+			"midriff".to_string(),
 			Affine3A::from_quat(pose.chest_rotation / 2.0),
 		),
 		(
@@ -242,11 +326,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"left_upper_arm".to_string(),
-			Affine3A::from_rotation_z(-PI / 4.0),
+			Affine3A::IDENTITY,
 		),
 		(
 			"left_lower_arm".to_string(),
-			Affine3A::from_rotation_z(-PI / 4.0),
+			Affine3A::IDENTITY,
 		),
 		(
 			"left_hand".to_string(),
@@ -254,11 +338,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"right_upper_arm".to_string(),
-			Affine3A::from_rotation_z(PI / 4.0),
+			Affine3A::IDENTITY,
 		),
 		(
 			"right_lower_arm".to_string(),
-			Affine3A::from_rotation_z(PI / 4.0),
+			Affine3A::IDENTITY,
 		),
 		(
 			"right_hand".to_string(),
@@ -269,28 +353,26 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 
 fn leg_ik(
 	props: HumanoidProportions,
-	hip_dir: Vec3,
-	base_hip_height: f32,
 	hip_pos: Vec3,
-	foot_position: Vec3,
+	foot_pos: Vec3,
 	toe_vertical_offset: f32,
 ) -> (Quat, Quat, Quat) {
 	assert!(props.foot_length.abs() > toe_vertical_offset.abs(),
 		"The toe_vertical_offset of {} is longer than the foot length of {}", toe_vertical_offset, props.foot_length
 	);
 
+	let leg_length = props.thigh_length + props.calf_length;
 	let thigh_length_sqr = props.thigh_length * props.thigh_length;
 	let calf_length_sqr = props.calf_length * props.calf_length;
 
-	let hip_pos = hip_dir * props.hip_width + hip_pos;
-	let foot_offset = foot_position - hip_pos;
+	let foot_offset = foot_pos - hip_pos;
 	let mut foot_range_sqr = foot_offset.length_squared();
 	let mut foot_range = foot_range_sqr.sqrt();
-	if foot_range > base_hip_height {
-		foot_range = base_hip_height;
+	let foot_dir = foot_offset / foot_range;
+	if foot_range > leg_length {
+		foot_range = leg_length;
 		foot_range_sqr = foot_range * foot_range;
 	}
-	let foot_dir = foot_offset / foot_range;
 	let hip_rotation =
 		Quat::from_rotation_arc(Vec3::NEG_Y, foot_dir) *
 		Quat::from_rotation_x(-(
@@ -313,4 +395,36 @@ fn leg_ik(
 		);
 
 	(hip_rotation, knee_rotation, foot_rotation)
+}
+
+fn arm_ik(
+	props: HumanoidProportions,
+	shoulder_dir: Vec3,
+	shoulder_pos: Vec3,
+	hand_pos: Vec3,
+) -> (Quat, Quat) {
+	let arm_length = props.lower_arm_length + props.upper_arm_length;
+	let upper_arm_length_sqr = props.upper_arm_length * props.upper_arm_length;
+	let lower_arm_length_sqr = props.lower_arm_length * props.lower_arm_length;
+
+	let hand_offset = hand_pos - shoulder_pos;
+	let mut hand_range_sqr = hand_offset.length_squared();
+	let mut hand_range = hand_range_sqr.sqrt();
+	let hand_dir = hand_offset / hand_range;
+	if hand_range > arm_length {
+		hand_range = arm_length;
+		hand_range_sqr = arm_length * arm_length;
+	}
+	let shoulder_rotation =
+		Quat::from_rotation_arc(shoulder_dir, hand_dir) *
+		Quat::from_rotation_x(-(
+			(hand_range_sqr + upper_arm_length_sqr - lower_arm_length_sqr) /
+			(2.0 * hand_range * props.upper_arm_length)
+		).acos());
+	let elbow_rotation = Quat::from_rotation_x(PI - (
+		(upper_arm_length_sqr + lower_arm_length_sqr - hand_range_sqr) /
+		(2.0 * props.upper_arm_length * props.lower_arm_length)
+	).acos());
+
+	(shoulder_rotation, elbow_rotation)
 }
