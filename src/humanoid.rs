@@ -35,7 +35,8 @@ impl HumanoidProportions {
 
 pub struct HumanoidPoseDescriptor {
 	pub hip_height: f32,
-	pub torso_rotation: Quat,
+	pub hip_rotation: Quat,
+	pub chest_rotation: Quat,
 	pub head_rotation: Quat,
 	pub left_foot_position: Vec3,
 	pub left_toes_vertical_offset: f32,
@@ -179,7 +180,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 
 	let (left_hip_rotation, left_knee_rotation, left_foot_rotation) = leg_ik(
 		props,
-		pose.torso_rotation * Vec3::X,
+		pose.hip_rotation * Vec3::X,
 		base_hip_height,
 		hip_pos,
 		pose.left_foot_position,
@@ -187,7 +188,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 	);
 	let (right_hip_rotation, right_knee_rotation, right_foot_rotation) = leg_ik(
 		props,
-		pose.torso_rotation * Vec3::NEG_X,
+		pose.hip_rotation * Vec3::NEG_X,
 		base_hip_height,
 		hip_pos,
 		pose.right_foot_position,
@@ -197,7 +198,7 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 	Pose::new(HashMap::from([
 		(
 			"hips".to_string(),
-			Affine3A::from_translation(Vec3::Y * (base_hip_height - pose.hip_height)),
+			Affine3A::from_rotation_translation(pose.hip_rotation, Vec3::Y * (base_hip_height - pose.hip_height)),
 		),
 		(
 			"left_thigh".to_string(),
@@ -225,11 +226,11 @@ pub fn build_humanoid_pose(props: HumanoidProportions, pose: HumanoidPoseDescrip
 		),
 		(
 			"midriff".to_string(),
-			Affine3A::from_quat(pose.torso_rotation / 2.0),
+			Affine3A::from_quat(pose.chest_rotation / 2.0),
 		),
 		(
 			"chest".to_string(),
-			Affine3A::from_quat(pose.torso_rotation / 2.0),
+			Affine3A::from_quat(pose.chest_rotation / 2.0),
 		),
 		(
 			"neck".to_string(),

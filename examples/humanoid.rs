@@ -21,7 +21,8 @@ fn main() {
 			let (right_foot_position, right_toes_vertical_offset) = walk_foot_position_by_time((time + 0.5) % 1.0, -0.18);
 			let pose = build_humanoid_pose(props, HumanoidPoseDescriptor {
 				hip_height: 0.5 + ((time * 2.0 * PI).sin() * 0.15).abs(),
-				torso_rotation: Quat::IDENTITY,
+				hip_rotation: Quat::from_rotation_y((time * 2.0 * PI).cos() * PI / 16.0),
+				chest_rotation: Quat::from_rotation_y((time * 2.0 * PI).cos() * -PI / 8.0),
 				head_rotation: Quat::IDENTITY,
 				left_foot_position,
 				left_toes_vertical_offset,
@@ -33,7 +34,7 @@ fn main() {
 				right_hand_rotation: Quat::IDENTITY,
 			});
 			transform(
-				Affine3A::from_rotation_y(PI/16.0),
+				Affine3A::from_rotation_y(-PI/4.0 + PI/2.0),
 				skeleton(skel.clone(), pose, make_char(props)),
 			)
 		}),
