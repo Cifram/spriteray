@@ -52,6 +52,10 @@ name = "difference"
 required-features = ["image"]
 
 [[example]]
+name = "rounded_quad"
+required-features = ["image"]
+
+[[example]]
 name = "skeleton"
 required-features = ["image"]
 
