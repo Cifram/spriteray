@@ -1,4 +1,6 @@
-#[derive(Clone, Copy)]
+use std::ops::Mul;
+
+#[derive(Clone, Copy, PartialEq)]
 pub struct Color {
 	pub r: f32,
 	pub g: f32,
@@ -28,5 +30,13 @@ impl Color {
 			self.g + (1.0 - self.g) * amount,
 			self.b + (1.0 - self.b) * amount,
 		)
+	}
+}
+
+impl Mul<f32> for Color {
+	type Output = Color;
+
+	fn mul(self, rhs: f32) -> Self::Output {
+		Color::new(self.r * rhs, self.g * rhs, self.b * rhs)
 	}
 }

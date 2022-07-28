@@ -20,14 +20,14 @@ pub struct HumanoidProportions {
 impl HumanoidProportions {
 	pub fn chibi() -> Self {
 		Self {
-			upper_arm_length: 0.3,
-			lower_arm_length: 0.3,
-			thigh_length: 0.3,
-			calf_length: 0.3,
+			upper_arm_length: 0.25,
+			lower_arm_length: 0.25,
+			thigh_length: 0.35,
+			calf_length: 0.35,
 			foot_length: 0.15,
-			torso_height: 0.6,
-			hip_width: 0.14,
-			shoulder_width: 0.3,
+			torso_height: 0.5,
+			hip_width: 0.2,
+			shoulder_width: 0.4,
 			neck_length: 0.05,
 		}
 	}
@@ -76,7 +76,7 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 		(
 			"left_foot".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_z(-PI / -8.0), Vec3::Y * props.calf_length),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_z(PI / -8.0), Vec3::Y * props.calf_length),
 				Some("left_calf".to_string()),
 			),
 		),
@@ -97,7 +97,7 @@ pub fn build_humanoid_skeleton(props: HumanoidProportions) -> Skeleton {
 		(
 			"right_foot".to_string(),
 			Bone::new(
-				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_y(-PI / 8.0), Vec3::Y * props.calf_length),
+				Affine3A::from_rotation_translation(Quat::from_rotation_x(-PI / 2.0) * Quat::from_rotation_y(PI / 8.0), Vec3::Y * props.calf_length),
 				Some("right_calf".to_string()),
 			),
 		),
